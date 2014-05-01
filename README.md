@@ -1,4 +1,4 @@
 TiebaSignPlus
 ==========
 
-plugins for kookxiang tieba_sign
+plugins for kookxiang tieba_sign.

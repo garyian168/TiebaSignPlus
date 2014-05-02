@@ -158,7 +158,7 @@ function client_rppost($uid, $tieba, $content) {
 	curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
 	curl_setopt ( $ch, CURLOPT_COOKIE, $cookie );
 	curl_setopt ( $ch, CURLOPT_POST, true );
-	curl_setopt ( $ch, CURLOPT_POSTFIELDS, http_build_query ( $formdata ) );
+	curl_setopt($ch,CURLOPT_POSTFIELDS,http_build_query($formdata));
 	$re = @json_decode ( curl_exec ( $ch ), ture );
 	curl_close ( $ch );
 	switch ($setting ['client_type']) {

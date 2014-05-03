@@ -196,9 +196,9 @@ function x_gettbs($cookie,$id){
 	curl_setopt($ch,CURLOPT_COOKIE,$cookie);
 	$result =curl_exec($ch);
 	curl_close($ch);
-	$result=json_decode($result,true);
-	if(($result['is_login']!=1)&&$id&&$result) DB::query("update x_meizi_b set islogin=1 where id='$id'");
-	return $result['tbs'];
+	$result_json=json_decode($result,true);
+	//if(($result_json['is_login']===0)&&$id&&strpos($result,'is_login')!==FALSE) DB::query("update x_meizi_b set islogin=1 where id='$id'");
+	return $result_json['tbs'];
 }
 
 function x_get_baidu_userinfo($cookie){

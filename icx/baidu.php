@@ -1,12 +1,7 @@
 <?php
 /*
- * baidu class
- * http://baiduclass.icx.me
- * Version 0.1.1
- *
- * Copyright 2014, Cai Cai
- * Released under the MIT license
-*/
+ * baidu class | Version 0.1.1 | Copyright 2014, Cai Cai | Released under the MIT license
+ */
 class baidu{
 	protected $un = '';
 	protected $uid = '';
@@ -209,6 +204,7 @@ EOF;
 				foreach($forum['tlist'] as $thread){
 					if($thread['is_top'] == 0 && $thread['is_zaned'] == 0) $zan_threads[] = $thread;
 				}
+				if(!count($zan_threads)) throw new Exception('无可赞的帖子',60);
 				$zan_thread = $zan_threads[array_rand($zan_threads)];
 				$info['tid'] = $zan_thread['tid'];
 				$info['pid'] = $zan_thread['pid'];
@@ -221,6 +217,25 @@ EOF;
 			default:
 		}
 		return $info;
+	}
+	public function get_user_info(){
+		$this->formdata=array(
+				'has_plist'=>'1',
+				'is_owner'=>'1',
+				'need_post_count'=>'1',
+				'pn'=>'1',
+				'rn'=>'20',
+				'uid'=>$this->uid(),
+		);
+		$result=$this->fetch("http://c.tieba.baidu.com/c/u/user/profile");
+		$result['i']=array(
+			'sex'=>$result['user']['sex'],
+			'tb_age'=>$result['user']['tb_age'],
+			'fans_num'=>$result['user']['fans_num'],
+			'concern_num'=>$result['user']['concern_num'],
+			'like_forum_num'=>$result['user']['like_forum_num']
+		);
+		return $this->common_return($result);
 	}
 	public function web_tbs(){
 		if(!empty($this->tbs)) return $this->tbs;
@@ -468,8 +483,7 @@ EOF;
 		if(count($result['data']['gift_info'])){
 			foreach($result['data']['gift_info'] as $gift){
 				// 取每个gift
-				if($gift['gift_type'] == 1)
-					$type = 'time';
+				if($gift['gift_type'] == 1) $type = 'time';
 				else $type = 'rand';
 				$this->formdata = array(
 						'ie' => 'utf-8',
